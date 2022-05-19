@@ -1,0 +1,43 @@
+*, body{
+  box-sizing: border-box;
+}
+
+.leaflet-container{
+  width: 100%;
+  height: 100vh;
+}
+
+.container{
+  width: 100%;
+  height: 100vh;
+  padding: 10px;
+}
+
+.link{
+  text-decoration: none;
+  color: #000;
+}
+
+.d_flex{
+  display: flex;
+}
+
+.justify_content_center{
+  justify-content: center;
+}
+
+.justify_content_start{
+  justify-content: flex-start;
+}
+
+.justify_content_end{
+  justify-content: flex-end;
+}
+
+.align_items_center{
+  align-items: center;
+}
+
+.justify_items_center{
+  justify-items: center;
+}
