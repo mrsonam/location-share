@@ -13,13 +13,16 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { Link } from 'react-router-dom';
-
-const isLoggedIn = localStorage.getItem('isLoggedIn');
-
-const pages = isLoggedIn ? ['home'] : ['sign up', 'login'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+import { useSelector, useDispatch } from 'react-redux';
+import { setIsLoggedIn, setUser } from '../features/userSlice';
 
 const NavBar = () => {
+  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
+  const pages = user.isLoggedIn ? ['home'] : ['sign up', 'login'];
+  const settings = ['Logout'];
+
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -36,6 +39,11 @@ const NavBar = () => {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const logoutHandler = () => {
+    dispatch(setUser({}));
+    dispatch(setIsLoggedIn(false));
   };
 
   return (
@@ -91,7 +99,7 @@ const NavBar = () => {
             >
               {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Link to={`/${page.replace(" ", "")}`} className="link">
+                  <Link to={`/${page.replace(' ', '')}`} className="link">
                     <Typography textAlign="center">{page}</Typography>
                   </Link>
                 </MenuItem>
@@ -119,7 +127,7 @@ const NavBar = () => {
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
-              <Link to={`/${page.replace(" ", "")}`} className="link">
+              <Link to={`/${page.replace(' ', '')}`} className="link">
                 <Button
                   key={page}
                   onClick={handleCloseNavMenu}
@@ -131,11 +139,11 @@ const NavBar = () => {
             ))}
           </Box>
 
-          {isLoggedIn && (
+          {user.isLoggedIn && (
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Sonam Sharp" src="/static/images/avatar/2.jpg" />
+                  <Avatar alt={user.user.name} src="" />
                 </IconButton>
               </Tooltip>
               <Menu
@@ -154,8 +162,11 @@ const NavBar = () => {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
+                <MenuItem>
+                  <Typography textAlign="center">{user.user.name}</Typography>
+                </MenuItem>
                 {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                  <MenuItem key={setting} onClick={logoutHandler}>
                     <Typography textAlign="center">{setting}</Typography>
                   </MenuItem>
                 ))}
